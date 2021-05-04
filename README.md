@@ -49,6 +49,7 @@ Simply execute command as a background process as
 
 	watchmem &
 
+
 Mechanism
 --------------------------------------------------------------------------------
 
@@ -64,5 +65,19 @@ In other words, it's like a handy script.
 I wrote it overnight, but I haven't tested it well and its usefulness is still unknown.
 
 Enjoy happy hacking!
+
+Genie Version
+--------------------------------------------------------------------------------
+
+Genie, a brother of Vala, is a statically typed programming language.
+It looks like a script like Python because it doesn't have curly braces.
+I write a Genie version of watchmem too.
+
+To compile watchmem from genie source codes by this command:
+
+	make genie
+
+The generated executable has the same functionality as the vala version.
+It's a bonus track.
 
 (C) 2021 Takayuki Tanaka.

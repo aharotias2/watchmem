@@ -74,16 +74,14 @@ class PStatusCollector : Object
             {
                 continue;
             }
-            else
-            {
-                string pname = pstatus["name"];
-                int pid_2 = int.parse(pstatus["pid"]);
-                string vm_size_s = pstatus["vmsize"];
-                MatchInfo matches_2;
-                kb_regex.match(vm_size_s, 0, out matches_2);
-                long vm_size = long.parse(matches_2.fetch(1));
-                result.add(new PStatusData(pname, pid_2, vm_size));
-            }
+
+            string pname = pstatus["name"];
+            int pid_2 = int.parse(pstatus["pid"]);
+            string vm_size_s = pstatus["vmsize"];
+            MatchInfo matches_2;
+            kb_regex.match(vm_size_s, 0, out matches_2);
+            long vm_size = long.parse(matches_2.fetch(1));
+            result.add(new PStatusData(pname, pid_2, vm_size));
         }
 
         result.sort((a, b) => a.vm_size < b.vm_size ? 1 : a.vm_size == b.vm_size ? 0 : -1);
