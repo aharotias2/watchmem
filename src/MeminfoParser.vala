@@ -2,7 +2,7 @@ class MeminfoParser : Object
 {
     private const string LINE_FORMAT = "^([a-zA-Z()]+): +([0-9]+)( (kB))?$";
     private static Regex meminfo_regex;
-    
+
     static construct
     {
         try

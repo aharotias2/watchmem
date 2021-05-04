@@ -4,11 +4,11 @@ class PStatusCollector : Object
     private static Regex kb_regex;
     private static int uid;
     private static PStatusParser parser;
-    
+
     static construct
     {
         uid = (int) Posix.getuid();
-        
+
         try
         {
             pid_regex = new Regex("^[0-9]+$");
@@ -19,14 +19,14 @@ class PStatusCollector : Object
             stderr.printf("RegexError: %s\n", e.message);
             Process.exit(1);
         }
-        
+
         parser = new PStatusParser();
     }
-    
+
     public Gee.List<PStatusData> collect()
     {
         Gee.List<PStatusData> result = new Gee.ArrayList<PStatusData>();
-        
+
         string dir_path = "/proc";
         Dir dir;
         try
@@ -38,7 +38,7 @@ class PStatusCollector : Object
             stderr.printf("Failed to open directory\n");
             Process.exit(1);
         }
-        
+
         string? name = null;
         while ((name = dir.read_name()) != null)
         {
@@ -56,7 +56,7 @@ class PStatusCollector : Object
             {
                 continue;
             }
-            
+
             int pid = int.parse(name);
             Gee.Map<string, string> pstatus = parser.parse_pstatus(pid);
             string pstatus_uid_s = pstatus["uid"].split(" ")[0];
@@ -85,7 +85,7 @@ class PStatusCollector : Object
                 result.add(new PStatusData(pname, pid_2, vm_size));
             }
         }
-        
+
         result.sort((a, b) => a.vm_size < b.vm_size ? 1 : a.vm_size == b.vm_size ? 0 : -1);
         return result;
     }

@@ -2,7 +2,7 @@ class PStatusParser : Object
 {
     private const string FILE_FORMAT = "^([a-zA-Z0-9-_]+):[ \\t]*(.+)$";
     private static Regex regex;
-    
+
     static construct
     {
         try
@@ -15,7 +15,7 @@ class PStatusParser : Object
             Process.exit(1);
         }
     }
-    
+
     public Gee.Map<string, string> parse_pstatus(uint pid)
     {
         Gee.Map<string, string> result = new Gee.HashMap<string, string>();

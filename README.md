@@ -61,6 +61,7 @@ file in the directory in `/proc/${PID}`, and displays the process with the highe
 memory usage from the top to the fifth.
 
 In other words, it's like a handy script.
+I wrote it overnight, but I haven't tested it well and its usefulness is still unknown.
 
 Enjoy happy hacking!
 
