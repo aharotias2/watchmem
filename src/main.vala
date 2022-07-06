@@ -9,24 +9,21 @@ const int upper_limit = 95;
 const int MARGIN_ROW = 5;
 const int MARGIN_COL = 10;
 
-int main(string[] args)
-{
+int main(string[] args) {
     Gtk.init(ref args);
     Timeout.add(1000, watch_mem);
     Gtk.main();
     return 0;
 }
 
-bool watch_mem()
-{
+bool watch_mem() {
     MeminfoParser meminfo_parser = new MeminfoParser();
     Gee.Map<string, long> meminfo = meminfo_parser.parse_meminfo();
     long mem_total = meminfo["MemTotal"];
     long mem_available = meminfo["MemAvailable"];
     int usage_percent = (int) ((double) (mem_total - mem_available) / (double) mem_total * 100.0);
 
-    if (usage_percent >= upper_limit)
-    {
+    if (usage_percent >= upper_limit) {
         PStatusCollector collector = new PStatusCollector();
         Gee.List<PStatusData> data = collector.collect();
 
@@ -42,8 +39,7 @@ bool watch_mem()
             grid.attach(new Gtk.Label("<b>Memory usage</b>") { use_markup = true }, 2, 0, 2);
             grid.attach(new Gtk.Label("<b>Action</b>") { use_markup = true }, 4, 0);
 
-            for (int i = 0; i < 5 && i < data.size; i++)
-            {
+            for (int i = 0; i < 10 && i < data.size; i++) {
                 PStatusData pstatus = data[i];
 
                 Gtk.Label label_pid = new Gtk.Label(pstatus.pid.to_string()) {
@@ -92,14 +88,11 @@ bool watch_mem()
                     Gtk.MessageDialog confirm = new Gtk.MessageDialog(dialog, MODAL, OTHER, OK_CANCEL, CONFIRM.printf(pstatus.pid));
                     confirm.show_all();
                     int user_choice = confirm.run();
-                    if (user_choice == Gtk.ResponseType.OK)
-                    {
+                    if (user_choice == Gtk.ResponseType.OK) {
                         Posix.kill(pstatus.pid, Posix.Signal.KILL);
                         confirm.close();
                         dialog.close();
-                    }
-                    else
-                    {
+                    } else {
                         confirm.close();
                     }
                 });
@@ -111,7 +104,7 @@ bool watch_mem()
                 grid.attach(button_kill, 4, i + 1);
             }
 
-            dialog.get_content_area().pack_start(grid, false, false);
+            dialog.get_content_area().pack_start(grid, true, true);
             dialog.show_all();
         }
 
@@ -120,35 +113,4 @@ bool watch_mem()
     }
 
     return Source.CONTINUE;
-}
-
-string comma_long(long value)
-{
-    string result = "";
-    string value_s = value.to_string();
-    for (int i = value_s.length - 3; i >= 0; i -= 3)
-    {
-        if (result == "")
-        {
-            result = value_s.substring(i, 3);
-        }
-        else
-        {
-            result = value_s.substring(i, 3) + "," + result;
-        }
-    }
-    int rem = value_s.length % 3;
-    if (rem > 0)
-    {
-        if (result.length > 0)
-        {
-            result = value_s.substring(0, rem) + "," + result;
-        }
-        else
-        {
-            result = value_s.substring(0, rem);
-        }
-    }
-
-    return result;
 }
